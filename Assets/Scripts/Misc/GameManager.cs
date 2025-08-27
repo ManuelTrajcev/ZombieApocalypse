@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     private float _startTime;
     private const string ENEMIES_LEFT_STRING = "Enemies left: ";
     private const string SCORE_STRING = "Score: ";
+    private const string TIME_BONUS_STRING = "Time Bonus: +";
     private bool _isInputDisabled = false;
 
     void Start()
@@ -44,7 +45,7 @@ public class GameManager : MonoBehaviour
             _timeBonus = Mathf.Max(0f, Mathf.Log(1000f + 1) - Mathf.Log(elapsedTime + 1));
             _timeBonus *= 2.8f;
             scoreWonText.text = SCORE_STRING + _score.ToString();
-            timeBonusText.text = timeBonusText.text + _timeBonus.ToString();
+            timeBonusText.text = TIME_BONUS_STRING + _timeBonus.ToString();
             youWonUI.SetActive(true);
             DisablePlayerInput();
             StarterAssetsInputs starterAssetsInputs = FindFirstObjectByType<StarterAssetsInputs>();
