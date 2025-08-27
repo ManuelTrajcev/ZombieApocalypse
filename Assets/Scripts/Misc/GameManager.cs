@@ -2,10 +2,10 @@ using StarterAssets;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject player;  // Reference to the player
-    [SerializeField] private MonoBehaviour[] playerScripts;  // List of player scripts to disable
+    [SerializeField] private GameObject player;
     FirstPersonController _firstPersonController;
     [SerializeField] TMP_Text enemiesLeftText;
     [SerializeField] TMP_Text scoreText;
@@ -18,13 +18,18 @@ public class GameManager : MonoBehaviour
     private float _startTime;
     private const string ENEMIES_LEFT_STRING = "Enemies left: ";
     private const string SCORE_STRING = "Score: ";
-
+    private const string TIME_BONUS_STRING = "Time Bonus: +";
+    private bool _isInputDisabled = false;
 
     void Start()
     {
+        EnablePlayerInput();
+        StarterAssetsInputs starterAssetsInputs = FindFirstObjectByType<StarterAssetsInputs>();
+        starterAssetsInputs.SetCursorState(true);
         _startTime = Time.time;
         _firstPersonController = player.GetComponent<FirstPersonController>();
     }
+
     public void AdjustEnemiesLeft(int amount)
     {
         _enemiesLeft += amount;
@@ -32,6 +37,7 @@ public class GameManager : MonoBehaviour
         {
             AdjustScoreText(10);
         }
+
         enemiesLeftText.text = ENEMIES_LEFT_STRING + _enemiesLeft.ToString();
         if (_enemiesLeft <= 0)
         {
@@ -39,15 +45,14 @@ public class GameManager : MonoBehaviour
             _timeBonus = Mathf.Max(0f, Mathf.Log(1000f + 1) - Mathf.Log(elapsedTime + 1));
             _timeBonus *= 2.8f;
             scoreWonText.text = SCORE_STRING + _score.ToString();
-            timeBonusText.text = timeBonusText.text + _timeBonus.ToString();
+            timeBonusText.text = TIME_BONUS_STRING + _timeBonus.ToString();
             youWonUI.SetActive(true);
             DisablePlayerInput();
             StarterAssetsInputs starterAssetsInputs = FindFirstObjectByType<StarterAssetsInputs>();
-            starterAssetsInputs.SetCursorState(false);
             starterAssetsInputs.shoot = false;
         }
     }
-    
+
     public void AdjustScoreText(int amount)
     {
         _score += amount;
@@ -56,9 +61,9 @@ public class GameManager : MonoBehaviour
         if (_enemiesLeft <= 0)
         {
             youWonUI.SetActive(true);
-            
         }
     }
+
     public void QuitButton()
     {
         Debug.LogWarning("Quit");
@@ -72,53 +77,45 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(currentScene);
     }
     
-    private bool isInputDisabled = false;
+    public void NextLevelButton()
+    {
+        Debug.LogWarning("NextLevel");
+        int currentScene = SceneManager.GetActiveScene().buildIndex;
+        if(SceneManager.sceneCount - 1 < currentScene)
+        SceneManager.LoadScene(currentScene+1);
+    }
 
-    // Call this when you want to disable player input
     public void DisablePlayerInput()
     {
-        if (!isInputDisabled)
+        if (!_isInputDisabled)
         {
-            // Disable player input scripts
-            foreach (var script in playerScripts)
-            {
-                script.enabled = false;
-            }
-            
+            StarterAssetsInputs starterAssetsInputs = FindFirstObjectByType<StarterAssetsInputs>();
+            starterAssetsInputs.SetCursorState(false);
             _firstPersonController.DisablePlayerInput();
-            
-            // Optionally disable player movement or camera scripts if needed
+
             if (player != null)
-                player.GetComponent<CharacterController>().enabled = false; // If you're using CharacterController for movement
+                player.GetComponent<CharacterController>().enabled = false;
 
             if (GetComponent<Camera>() != null)
-                GetComponent<Camera>().GetComponent<Camera>().enabled = false;  // Disable camera if needed
+                GetComponent<Camera>().GetComponent<Camera>().enabled = false; 
 
-            isInputDisabled = true;
+            _isInputDisabled = true;
         }
     }
 
-    // Call this when you want to re-enable player input
     public void EnablePlayerInput()
     {
-        if (isInputDisabled)
+        if (_isInputDisabled)
         {
-            // Re-enable player input scripts
-            foreach (var script in playerScripts)
-            {
-                script.enabled = true;
-            }
-            
             _firstPersonController.EnablePlayerInput();
-            
-            // Re-enable player movement or camera scripts if needed
+
             if (player != null)
                 player.GetComponent<CharacterController>().enabled = true;
 
             if (GetComponent<Camera>() != null)
                 GetComponent<Camera>().GetComponent<Camera>().enabled = true;
 
-            isInputDisabled = false;
+            _isInputDisabled = false;
         }
     }
 }
