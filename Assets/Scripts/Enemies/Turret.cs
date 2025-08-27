@@ -17,17 +17,16 @@ public class Turret : MonoBehaviour
     void Start()
     {
         StartCoroutine(SpawnProjectileRoutine());
-        // player = FindFirstObjectByType<PlayerHealth>();
     }
     IEnumerator SpawnProjectileRoutine()
     {
         while (player)
         {
+            yield return new WaitForSeconds(spawnTime);
+
             Projectile projectile  = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity).GetComponent<Projectile>();
             projectile.Init(20);
             projectile.transform.LookAt(playerTargetPoint.position);
-            
-            yield return new WaitForSeconds(spawnTime);
         }
     }
 }

@@ -7,7 +7,6 @@ public class EnemyHealth : MonoBehaviour
     GameManager gameManager;
     int currentHealth;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         currentHealth = startingHealth;
@@ -24,13 +23,13 @@ public class EnemyHealth : MonoBehaviour
         currentHealth -= amount;
         if (currentHealth <= 0)
         {
-            gameManager.AdjustEnemiesLeft(-1);
             SelfDestruct();
         }
     }
 
     public void SelfDestruct()
     {
+        gameManager.AdjustEnemiesLeft(-1);
         Instantiate(robotExplosion, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }

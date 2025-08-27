@@ -59,6 +59,7 @@ namespace StarterAssets
 		private float _rotationVelocity;
 		private float _verticalVelocity;
 		private float _terminalVelocity = 53.0f;
+		private ActiveWeapon _activeWeapon;
 
 		// timeout deltatime
 		private float _jumpTimeoutDelta;
@@ -116,6 +117,26 @@ namespace StarterAssets
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
+		}
+		
+		public void DisablePlayerInput()
+		{
+			if (_playerInput != null)
+			{
+				_playerInput.enabled = false; 
+			}
+
+			_input.enabled = false; 
+		}
+
+		public void EnablePlayerInput()
+		{
+			if (_playerInput != null)
+			{
+				_playerInput.enabled = true; 
+			}
+
+			_input.enabled = true; 
 		}
 
 		public void ChangeRotationSpeed(float speed)
