@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using StarterAssets;
 using TMPro;
 using UnityEngine;
@@ -13,16 +14,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] TMP_Text timeBonusText;
     [SerializeField] GameObject youWonUI;
     private int _enemiesLeft = 0;
-    private int _score = 0;
+    private float _currentLevelScore = 0;
     private float _timeBonus = 0;
     private float _startTime;
     private const string ENEMIES_LEFT_STRING = "Enemies left: ";
     private const string SCORE_STRING = "Score: ";
     private const string TIME_BONUS_STRING = "Time Bonus: +";
     private bool _isInputDisabled = false;
+    List<int> allLevelsScores = new List<int>();
 
     void Start()
     {
+        int currentScene = SceneManager.GetActiveScene().buildIndex;
+        allLevelsScores[currentScene] = 0;
         EnablePlayerInput();
         StarterAssetsInputs starterAssetsInputs = FindFirstObjectByType<StarterAssetsInputs>();
         starterAssetsInputs.SetCursorState(true);
@@ -44,9 +48,22 @@ public class GameManager : MonoBehaviour
             float elapsedTime = Time.time - _startTime;
             _timeBonus = Mathf.Max(0f, Mathf.Log(1000f + 1) - Mathf.Log(elapsedTime + 1));
             _timeBonus *= 2.8f;
-            scoreWonText.text = SCORE_STRING + _score.ToString();
+            scoreWonText.text = SCORE_STRING + _currentLevelScore.ToString();
             timeBonusText.text = TIME_BONUS_STRING + _timeBonus.ToString();
             youWonUI.SetActive(true);
+            _currentLevelScore += _timeBonus;
+
+            PlayerPrefs.SetFloat("CurrentScore", PlayerPrefs.GetFloat("CurrentScore", 0) + _currentLevelScore);
+
+            var prevHighScore = PlayerPrefs.GetFloat("Highscore", 0);
+            var newScore = PlayerPrefs.GetFloat("CurrentScore", 0);
+
+            if (newScore > prevHighScore)
+            {
+                PlayerPrefs.SetFloat("Highscore", _currentLevelScore);
+                PlayerPrefs.Save();
+            }
+
             DisablePlayerInput();
             StarterAssetsInputs starterAssetsInputs = FindFirstObjectByType<StarterAssetsInputs>();
             starterAssetsInputs.shoot = false;
@@ -55,9 +72,9 @@ public class GameManager : MonoBehaviour
 
     public void AdjustScoreText(int amount)
     {
-        _score += amount;
+        _currentLevelScore += amount;
 
-        scoreText.text = SCORE_STRING + _score.ToString();
+        scoreText.text = SCORE_STRING + _currentLevelScore.ToString();
         if (_enemiesLeft <= 0)
         {
             youWonUI.SetActive(true);
@@ -76,13 +93,17 @@ public class GameManager : MonoBehaviour
         int currentScene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentScene);
     }
-    
+
     public void NextLevelButton()
     {
         Debug.LogWarning("NextLevel");
         int currentScene = SceneManager.GetActiveScene().buildIndex;
-        if(SceneManager.sceneCount - 1 < currentScene)
-        SceneManager.LoadScene(currentScene+1);
+        if (SceneManager.sceneCount - 1 < currentScene)
+            SceneManager.LoadScene(currentScene + 1);
+        else
+        {
+            SceneManager.LoadScene(0); 
+        }
     }
 
     public void DisablePlayerInput()
@@ -97,7 +118,7 @@ public class GameManager : MonoBehaviour
                 player.GetComponent<CharacterController>().enabled = false;
 
             if (GetComponent<Camera>() != null)
-                GetComponent<Camera>().GetComponent<Camera>().enabled = false; 
+                GetComponent<Camera>().GetComponent<Camera>().enabled = false;
 
             _isInputDisabled = true;
         }
