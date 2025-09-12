@@ -98,7 +98,4 @@ The project is organized as follows:
 6. **Survive:** Manage your health and defeat all enemies to win the level.
 7. **Progress:** Advance to the next level or restart from the menu.
 
-
 ---
-
-For more details, see the source code in the [Assets/Scripts/](Assets/Scripts/) and
