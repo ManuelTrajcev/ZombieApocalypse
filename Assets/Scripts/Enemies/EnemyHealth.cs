@@ -29,8 +29,8 @@ public class EnemyHealth : MonoBehaviour
 
     public void SelfDestruct()
     {
-        gameManager.AdjustEnemiesLeft(-1);
         Instantiate(robotExplosion, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
+        gameManager.AdjustEnemiesLeft(-1);
     }
 }
