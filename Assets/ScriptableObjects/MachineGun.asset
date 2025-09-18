@@ -21,3 +21,4 @@ MonoBehaviour:
   ZoomAmount: 10
   ZoomRotationSpeed: 0.4
   MagazineSize: 50
+  fireSfx: {fileID: 8300000, guid: 74ba7b22e9a10451eac3197982f7d594, type: 3}

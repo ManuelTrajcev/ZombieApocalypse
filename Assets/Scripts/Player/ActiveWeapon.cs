@@ -19,6 +19,7 @@ public class ActiveWeapon : MonoBehaviour
     float defaultFOV;
     float defaultRotationSpeed;
     private int currentAmmo;
+    AudioSource audioSource;
 
     private void Awake()
     {
@@ -27,6 +28,8 @@ public class ActiveWeapon : MonoBehaviour
         defaultFOV = playerCamera.m_Lens.FieldOfView;
         fpsController = GetComponentInParent<FirstPersonController>();
         defaultRotationSpeed = fpsController.RotationSpeed;
+        audioSource = GetComponent<AudioSource>();
+        audioSource.resource = currentWeaponSO.fireSfx;
     }
 
     void Start()
@@ -48,6 +51,7 @@ public class ActiveWeapon : MonoBehaviour
         {
             currentAmmo = currentWeaponSO.MagazineSize;
         }
+
         ammoText.text = currentAmmo.ToString("D2");
     }
 
@@ -55,7 +59,14 @@ public class ActiveWeapon : MonoBehaviour
     {
         timeSinceLastShot += Time.deltaTime;
 
-        if (!starterAssetsInputs.shoot) return;
+        if (!starterAssetsInputs.shoot)
+        {
+            if (currentWeaponSO.IsAutomatic)
+            {
+                audioSource.Stop();
+            }
+            return;
+        }
         if (timeSinceLastShot >= currentWeaponSO.FireRate && currentAmmo > 0)
         {
             string shootString = currentWeaponSO.name + SHOOT_STRING;
@@ -65,6 +76,14 @@ public class ActiveWeapon : MonoBehaviour
             animator.Play(shootString, 0, 0f);
             timeSinceLastShot = 0;
             AdjustAmo(-1);
+            if (currentWeaponSO.IsAutomatic && !audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
+            else
+            {
+                audioSource.Play();
+            }
         }
         else
         {
@@ -87,7 +106,8 @@ public class ActiveWeapon : MonoBehaviour
         Weapon newWeapon = Instantiate(pickedUpWeaponSo.WeaponPrefab, transform).GetComponent<Weapon>();
         currentWeapon = newWeapon;
         this.currentWeaponSO = pickedUpWeaponSo;
-        AdjustAmo(currentWeaponSO.MagazineSize);;
+        AdjustAmo(currentWeaponSO.MagazineSize);
+        audioSource.resource = pickedUpWeaponSo.fireSfx;
     }
 
     void HandleZoom()

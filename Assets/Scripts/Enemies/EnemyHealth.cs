@@ -6,6 +6,8 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private GameObject robotExplosion;
     GameManager gameManager;
     int currentHealth;
+    [SerializeField] ExplosionSfMenager explosionSfxMenager;
+
 
     void Awake()
     {
@@ -29,6 +31,10 @@ public class EnemyHealth : MonoBehaviour
 
     public void SelfDestruct()
     {
+        if (explosionSfxMenager)
+        {
+            explosionSfxMenager.PlayExplosion();
+        }
         Instantiate(robotExplosion, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
         gameManager.AdjustEnemiesLeft(-1);

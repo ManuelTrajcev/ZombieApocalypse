@@ -12,4 +12,5 @@ public class WeaponSO : ScriptableObject
     public float ZoomAmount = 10f;
     public float ZoomRotationSpeed = .4f;
     public int MagazineSize = 12;
+    public AudioClip fireSfx;
 }
