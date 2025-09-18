@@ -89,10 +89,9 @@ The project is organized as follows:
 - **Enemy AI:** [`Robot`](Assets/Scripts/Enemies/Robot.cs), [`Turret`](Assets/Scripts/Enemies/Turret.cs)
 - **Projectiles:** [`Projectile`](Assets/Scripts/Enemies/Projectile.cs)
 - **Health:** [`PlayerHealth`](Assets/Scripts/Player/PlayerHealth.cs), [`EnemyHealth`](Assets/Scripts/Enemies/EnemyHealth.cs)
-- **Background Music:** [`PlayerHealth`](Assets/Scripts/Misc/AudioPlayer.cs)
+- **Background Music:** [`AudioPlayer`](Assets/Scripts/Misc/AudioPlayer.cs)
 - **Game Management:** [`GameManager`](Assets/Scripts/Misc/GameManager.cs)
 - **Physics Push:** [`BasicRigidBodyPush`](Assets/Imported%20Assets/StarterAssets/FirstPersonController/Scripts/BasicRigidBodyPush.cs) allows the player to push rigidbodies.
-- 
 
 ---
 
