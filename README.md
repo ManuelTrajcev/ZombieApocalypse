@@ -15,6 +15,7 @@ Sharp Shooter is a first-person shooter (FPS) game project built with Unity. The
   - [Scoring System](#scoring-system)
   - [Health System](#health-system)
   - [UI & Menus](#ui--menus)
+  - [Music & SFX](#music--sfx)
 - [Scripts Overview](#scripts-overview)
 - [How to Play](#how-to-play)
 
@@ -73,6 +74,11 @@ The project is organized as follows:
 - **Main Menu:** Managed by [`MainMenuManager`](Assets/Scripts/MainMenu/MainMenuManager.cs), allowing players to start or quit the game.
 - **In-Game UI:** Displays ammo, health, score, enemies left, and win/game over screens.
 
+### Music & SFX
+
+- **Main Menu:** Managed by [`AudioPlayer`](Assets/Scripts/Misc/AudioPlayer.cs), plays a background music.
+- **WeapoOs SFX:** Each weapon has it's own music clip for a shooting sfx which is played by the Audio Source in ActiveWeapon.
+- **Explosion SFX:** Turrets and SpawnPortals have a Explosion SFX audio clip which is played when they are destroyed.
 ---
 
 ## Scripts Overview
@@ -83,8 +89,10 @@ The project is organized as follows:
 - **Enemy AI:** [`Robot`](Assets/Scripts/Enemies/Robot.cs), [`Turret`](Assets/Scripts/Enemies/Turret.cs)
 - **Projectiles:** [`Projectile`](Assets/Scripts/Enemies/Projectile.cs)
 - **Health:** [`PlayerHealth`](Assets/Scripts/Player/PlayerHealth.cs), [`EnemyHealth`](Assets/Scripts/Enemies/EnemyHealth.cs)
+- **Background Music:** [`PlayerHealth`](Assets/Scripts/Misc/AudioPlayer.cs)
 - **Game Management:** [`GameManager`](Assets/Scripts/Misc/GameManager.cs)
 - **Physics Push:** [`BasicRigidBodyPush`](Assets/Imported%20Assets/StarterAssets/FirstPersonController/Scripts/BasicRigidBodyPush.cs) allows the player to push rigidbodies.
+- 
 
 ---
 
