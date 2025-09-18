@@ -20,7 +20,6 @@ public class Weapon : MonoBehaviour
         RaycastHit hit;
         particleSystem.Play();
         impulseSource.GenerateImpulse();
-        
         if (Physics.Raycast(Camera.main.transform.position, _camera.transform.forward, out hit, Mathf.Infinity,
                 interactionLayers, QueryTriggerInteraction.Ignore))
         {

@@ -26,7 +26,15 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         int currentScene = SceneManager.GetActiveScene().buildIndex;
-        allLevelsScores[currentScene] = 0;
+        if (allLevelsScores.Count < currentScene - 1)
+        {
+            allLevelsScores.Add(0);
+        }
+        else
+        {
+            allLevelsScores[currentScene] = 0;
+        }
+
         EnablePlayerInput();
         StarterAssetsInputs starterAssetsInputs = FindFirstObjectByType<StarterAssetsInputs>();
         starterAssetsInputs.SetCursorState(true);
