@@ -26,13 +26,13 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         int currentScene = SceneManager.GetActiveScene().buildIndex;
-        if (allLevelsScores.Count < currentScene - 1)
+        if (allLevelsScores.Count < currentScene + 1)
         {
             allLevelsScores.Add(0);
         }
         else
         {
-            allLevelsScores[currentScene] = 0;
+            allLevelsScores[currentScene + 1] = 0;
         }
 
         EnablePlayerInput();
@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
         Debug.LogWarning("NextLevel");
         int currentScene = SceneManager.GetActiveScene().buildIndex;
         Debug.Log("Total scenes: " + SceneManager.sceneCount);
-        if (SceneManager.sceneCount > currentScene + 1)
+        if (SceneManager.sceneCountInBuildSettings > currentScene)
         {
             SceneManager.LoadScene(currentScene + 1);
         }
