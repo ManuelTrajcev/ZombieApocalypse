@@ -2,6 +2,7 @@
 
 Sharp Shooter is a first-person shooter (FPS) game project built with Unity. The game features classic FPS mechanics such as player movement, shooting, enemy AI, turrets, scoring, and health management. This document provides an overview of the project's structure, main systems, and gameplay logic.
 
+### Gameplay Video: https://youtu.be/B1gvPYveRt4
 ---
 
 ## Table of Contents
